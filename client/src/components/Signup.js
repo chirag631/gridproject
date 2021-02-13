@@ -13,6 +13,7 @@ import { TextField } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
   
   paper: {
-    backgroundColor:  '#002884',
+    backgroundColor:  '#192d3e',
     width:'100%',
     color: theme.palette.text.secondary,
   },
@@ -46,6 +47,11 @@ const useStyles = makeStyles((theme) => ({
   Typography1:{
       color:'#fff'
   },
+  Typography2:{
+    marginTop:10,
+    marginBottom:10
+
+  },
   margin: {
     '& > *': {
       margin: theme.spacing(1),
@@ -58,10 +64,13 @@ const useStyles = makeStyles((theme) => ({
     width: '25ch',
   },
  
-    button:{
-      marginTop:20,
-      marginBottom:20
-    },
+  button:{
+    backgroundColor:"#192d3e",
+    color:"#fff",
+    minWidth:300,
+    marginTop:5,
+    marginBottom:5
+  },
     root2:{
       marginTop:200,
       marginLeft:200,
@@ -257,7 +266,7 @@ console.log(fetchdata);
     
           <Button 
           type="submit"  
-          className={classes.button} variant="contained" color="primary"
+          className={classes.button} variant="contained" 
           
           >
         Create an account
@@ -267,11 +276,16 @@ console.log(fetchdata);
     
     Already have an account?
           
-      <Typography className={classes.Typography1} >
+    <Typography className={classes.Typography2} >
           <Link to="/login">
-            Login
-          </Link>   or 
-        
+            Signup
+          </Link>  
+          </Typography>
+          <Typography className={classes.Typography2} >
+           OR 
+        </Typography>
+           
+        <Typography className={classes.Typography2} >
           <Link to="/">
              Home
           </Link>
