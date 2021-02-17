@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign:'center'
   },
   root1:{
-      marginTop:200,
-      marginLeft:200,
+      marginTop:150,
+      marginLeft:150,
     },
   media: { 
     height:200,
