@@ -5,28 +5,40 @@ import Login from './components/Login'
 
 //import './MainStyle.css';
 import Users from './components/Users'
-import Adduser from './components/Adduser'
+
 import Signup from './components/Signup'
+import Homepage from './components/Homepage'
+import Logout from './components/Logout'
+import Addproject from "./components/Addproject"
 import {
   BrowserRouter as Router,
   Route,
   Switch
 } from "react-router-dom";
 
+
 function App() {
   return (
-    <Router>
+    <Router >
+      
     <div >
+    
       <Switch>
         <Route exact path="/" component={Home} />
+        
+        <Route exact path="/login"  component={Login} />
+        
+        <Route path="/Homepage" component={Homepage} />
+        <Route  path="/logout"  component={Logout} />
         <Route  path="/Signup"  component={Signup} />
-        
-        
-        <Route  path="/login"  component={Login} />
-        <Route  path="/:name" id=":_id"   component={Users} />
+        <Route path="/Homepage" component={Homepage} />
+        <Route path="/Addproject" component={Addproject}/>
+        <Route  path="/:name"    component={Users} />
         
       </Switch>
+      
     </div>
+ 
   </Router>
   );
 }

@@ -1,32 +1,29 @@
 import React from 'react';
 import NestedGrid from './Gridpage';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-//import '../MainStyle.css';
-//import Gridcard from './Gridcard';
-const useStyles = makeStyles((theme) => ({
-    
-    root:{
-        textAlign:'center'
+import CssBaseline from "@material-ui/core/CssBaseline";
+import {Button, lighten} from '@material-ui/core'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const themeLight = createMuiTheme({
+    palette: {
+      background: {
+        default: "#ffffff"
+      }
     }
-    
-   
-  }));
-
+  });
 const Home = () =>{
-
-    const classes = useStyles();
+const [light, setLight] = React.useState(true);
+    
     return(
-        
-        <div className={classes.root}>
-        
-        <Typography gutterBottom   variant="h2" component="h2">
-            
-            FUSE React! 
-          </Typography>
+        <ThemeProvider theme={light?themeLight:'' }>
+    <CssBaseline />
+        <div >
+      
         <NestedGrid />
 
         </div>
+        </ThemeProvider>
     )
 }
 

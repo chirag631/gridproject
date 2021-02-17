@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width:'99%',
-    
+    textAlign:'center',
+    marginTop:5
 
   },
   paper: {
@@ -20,10 +21,14 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   margin:{
-    marginBottom:theme.spacing(2)
-  }
+    margin:theme.spacing(2),
+    minWidth:150,
+  },
+ 
+  
+  
 }));
-const abc='';
+
 export default function NestedGrid(props) {
   const classes = useStyles();
   const [data1,setdata]=useState([]);
@@ -37,13 +42,14 @@ export default function NestedGrid(props) {
     loadUsers();
   }, []);
   
+  
   function FormRow(card,index) {
     return (
       
       <React.Fragment>
         
           <Grid item xs={4} >
-          <Paper className={classes.paper}><Gridcard name={card.name} /></Paper>
+          <Paper className={classes.paper}><Gridcard id={card._id} name={card.name} /></Paper>
         </Grid>
         
         
@@ -51,14 +57,22 @@ export default function NestedGrid(props) {
       </React.Fragment>
     );
   }
-  console.log(datalist);
+
+
+  
   console.log(data1);
+  
   return (
     <div className={classes.root} >
                  
-        <Button variant="contained" className={classes.margin} color="//#region" >
-          <Link class="btn btn-primary mr-2"  to={{pathname:"/Signup"}} >
+        <Button variant="contained" className={classes.margin}  >
+          <Link   to={{pathname:"/Signup"}} >
               Signup User
+           </Link>                  
+          </Button>
+          <Button variant="contained" className={classes.margin}  >
+          <Link   to={{pathname:"/login"}} >
+              Login
            </Link>                  
           </Button>
            

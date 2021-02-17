@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import {Link} from 'react-router-dom'
 
 
 const useStyles = makeStyles({
@@ -18,14 +18,25 @@ const useStyles = makeStyles({
   media: {
     height:250
   },
+  button:{
+    backgroundColor:"#192d3e",
+    color:"#fff",
+    minWidth:300,
+    marginTop:5,
+    marginBottom:5
+  },
 });
 
 export default function Gridcard(props) {
   const classes = useStyles();
 
   const {name}=props;
-  
+  const {id}=props;
 
+  
+  
+console.log(id);
+  
   return (
 
     <Card  className={classes.root}>
@@ -36,12 +47,18 @@ export default function Gridcard(props) {
           title="Contemplative Reptile"
         />
         <CardContent>
-        <Button size="small" color="primary">
+        
         <Typography gutterBottom variant="h5" component="h2">
-            {name}
-          </Typography>
-        </Button>
+        <Link to={{pathname:`/${name}`}}   >
+        
+              {name}
+          </Link> 
           
+          
+            
+          </Typography>
+        
+        
           
         </CardContent>
       </CardActionArea>

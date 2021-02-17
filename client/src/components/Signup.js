@@ -13,28 +13,28 @@ import { TextField } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+const themeLight = createMuiTheme({
+  palette: {
+    background: {
+      default: "#192d3e"
+    }
+  }
+});
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     
-    
-    width:'100%',
-    
-
-  },
-  root1: {
-    
-    minWidth:100,
-    maxWidth:500,
-    height:'100%',
-    marginBottom:300,
+    minWidth:300,
     textAlign:'center'
   },
-  
-  paper: {
-    backgroundColor:  '#192d3e',
-    width:'100%',
-    color: theme.palette.text.secondary,
+  root1:{
+    marginTop:150,
+    marginLeft:150,
   },
   media: { 
     height:200,
@@ -59,25 +59,20 @@ const useStyles = makeStyles((theme) => ({
     },
     
   },
-  
-  textField: {
-    width: '25ch',
-  },
- 
   button:{
     backgroundColor:"#192d3e",
     color:"#fff",
-    minWidth:300,
+    minWidth:200,
     marginTop:5,
     marginBottom:5
   },
-    root2:{
-      marginTop:200,
-      marginLeft:200,
-    }
+    
 }));
 
+
+
 export default function Signup() {
+  const [light, setLight] = React.useState(true);
   const classes = useStyles();
  
   const [user, setdata] = useState('');
@@ -134,8 +129,12 @@ console.log(fetchdata);
     setEmail('');
     setPassword('');
     setConfirmPassword('');
+    setState(false)
       
   };
+const uid=localStorage.getItem("uid");
+console.log(uid);
+
 
   const handleChangeName = (event) => {
       setName(event.target.value);
@@ -162,15 +161,18 @@ console.log(fetchdata);
 
   return (
     
+    <ThemeProvider theme={light?themeLight:'' }>
+    <CssBaseline />
+    
+    <Grid container  item xs={12}
+   >
+      
         
-      <Grid container className={classes.root}    >
-      <Paper className={classes.paper}>
-        <Grid container item xs={12} >
         
-        <Grid item xs={9} 
+        <Grid  item xs  
              >
                 
-                <div className={classes.root2}>
+                <div className={classes.root1} >
                  <CardMedia
           className={classes.media}
           image={fuse}
@@ -197,9 +199,9 @@ console.log(fetchdata);
 
     
 
-    <Grid item xs={3}>
+    <Grid item xs={3} xl={2} lg={3} md={4} sm={12} >
     
-      <Card  className={classes.root1}>
+      <Card  className={classes.root}>
       
         <CardContent>
             <Typography gutterBottom variant="h5"className={classes.Typography} component="h1">
@@ -267,6 +269,8 @@ console.log(fetchdata);
           <Button 
           type="submit"  
           className={classes.button} variant="contained" 
+          disabled={!name} disabled= {!email}
+          disabled={!password} disabled= {!confirmPassword} 
           
           >
         Create an account
@@ -278,7 +282,7 @@ console.log(fetchdata);
           
     <Typography className={classes.Typography2} >
           <Link to="/login">
-            Signup
+            Login
           </Link>  
           </Typography>
           <Typography className={classes.Typography2} >
@@ -297,10 +301,12 @@ console.log(fetchdata);
       
    </Grid>
           
-        </Grid>
-        </Paper>
+        
+       
       </Grid>
       
     
+  </ThemeProvider>
+     
   );
 }

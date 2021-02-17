@@ -2,6 +2,7 @@ var express = require('express');
 
 var path = require('path');
 const Register=require("./src/models/registers");
+const RegisterProject=require("./src/models/studentdetails");
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const PORT  = process.env.PORT || 5000;
@@ -26,12 +27,12 @@ var cors=require('cors');
 
 
 app.use(express.json()); 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(express.static(static_path));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended:true
+  extended:false
 }))
 app.use(cors());
 
@@ -60,32 +61,90 @@ app.get('/register',async(req,res)=>{
 app.post("/post", async(req,res)=>{
 
     try{
-
-      const password=req.body.password;
-     
-
       
-          
+            
             const registerEmployee = new Register({
                 name:req.body.name,
                 email:req.body.email,
                 password:req.body.password,
-                
-
             });
             const registered= await registerEmployee.save();
             
             res.status(201).send(registered);
             console.log(registered);
-          
-
-            
 
     }catch(e){
         res.status(400).set(e);
     }
 })
 
+app.post("/postprojectdata", async(req,res)=>{
+
+  try{
+          const registerProjectData = new RegisterProject({
+              
+              title:req.body.title,
+              discription:req.body.discription,
+              userid:req.body.userid,
+          });
+          const registered= await registerProjectData.save();
+          
+          res.status(201).send(registered);
+          console.log(registered);
+  }catch(e){
+      res.status(400).set(e);
+  }
+})
+
+app.post('/getprojectdata',async(req,res)=>{
+    const name=req.body.name;
+    const username=await Register.findOne({name:name});
+    
+    const userid=username._id;
+
+
+  RegisterProject.find({userid:userid})
+  .then(result=>{
+    res.status(200).json({
+      studentData:result
+    })
+  })
+.catch(err=>{
+  console.log(err);
+  res.status(500).json({
+    error:err
+  })
+})
+})
+
+app.post("/login", async(req,res)=>{
+
+  try{
+    const email=req.body.email;
+    const password=req.body.password;
+    console.log(password)
+    const useremail=await Register.findOne({email:email});
+    console.log(useremail.password);
+    const userid=useremail._id;
+    const username=useremail.name;
+    console.log(userid);
+
+    if(useremail.password===password){
+    
+      res.status(201).json({msg:"User Login Successfuly",status:true,userid,username});
+    }
+    else{
+      res.status(500).json({msg:"Invalid User",status:false});
+    }
+    
+    
+  }catch(e){
+  
+    res.status(400).send("invalid Email");
+}
+})
+
+          
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === 'production' ) {
   app.use(express.static(path.join(__dirname, 'client/build')));

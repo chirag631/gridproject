@@ -19,10 +19,7 @@ const employeeSchema=new mongoose.Schema({
         required:true,
         
          
-    }
-    
-
-    
+    }  
 })
 
 //create new collection

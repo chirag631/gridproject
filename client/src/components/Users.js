@@ -1,135 +1,119 @@
-import React, { useState} from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import React,{useEffect,useState} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { lighten, makeStyles } from '@material-ui/core/styles';
-import { TableCell, TableHead } from "@material-ui/core";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import {Button} from '@material-ui/core'
+import {Link, useParams} from 'react-router-dom'
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      width: '100%',
-    },
-    paper: {
-      width: '100%',
-      marginBottom: theme.spacing(2),
-    },
-    table: {
-      minWidth: 750,
-    },
-    container: {
-      maxHeight: 260,
-      
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-    },
-  }));
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    width:'99%',
+    textAlign:'center',
+    marginTop:5
 
-const User = (props) => {
+  },
+  media: {
+    height:250
+  },
+  paper: {
+    padding: theme.spacing(1),
+    
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  margin:{
+    marginBottom:theme.spacing(2)
+  },
   
-  const {_id}=useLocation();
   
-console.log(props);
+}));
+
+export default function Users(props) {
   const classes = useStyles();
-  const [user, setdata] = useState('');
-  
-  React.useEffect(() => {
+  const [data1,setdata]=useState([]);
+  const {name}=useParams();
+ 
+ 
+  console.log(props)
+
+  useEffect(() => {
     const loadUsers = async () => {
-      const res= await fetch("/register");
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify({name}),
+    };
+      const res= await fetch("/getprojectdata",requestOptions);
       const body=await res.json();
-      setdata(body.studentData[_id]);
+      console.log(body)    
+      setdata(body.studentData);
     };
     loadUsers();
   }, []);
-  console.log(user);
   
-
-  return (
-    <div className={classes.root} class="mainpage ">
-      <div ><h1 >User Details</h1><br/><h2></h2></div>
-
-      <Paper className={classes.paper} >
-      <div class="fl w-60  ">  
+  function FormRow(card,index) {
+    return (
       
-            <Button
-            variant="contained"
-            color="//#endregion"
-            rel="noopener noreferrer" >
-
-                <Link to='/'> Go To Home</Link>   
-             </Button> 
-        </div>
-      <TableContainer className={classes.container} >
-          <Table
-            className={classes.table}>
-            <TableHead>
-                <TableRow>
-                    <TableCell>
-                        Id
-                    </TableCell>
-                    <TableCell>
-                       Name
-                    </TableCell>
-                    <TableCell>
-                        Username
-                    </TableCell>
-                    <TableCell>
-                        Email
-                    </TableCell>
-
-                </TableRow>
-            </TableHead>
-            <TableBody>
+      <React.Fragment>
         
-
-                  
-                    <TableRow>
-                      <TableCell >
-                        {user._id}
-                      </TableCell>
-                      <TableCell >
-                        {user.name}
-                      </TableCell>
-                      <TableCell >
-                        {user.username}
-                      </TableCell>
-                      <TableCell >
-                        {user.email}
-                      </TableCell>
-                      </TableRow>
-                      
-            </TableBody>
-          </Table>
-        </TableContainer>
-      
-        
-           
-                   
-           
-           
-           
-        
-        
-         
+          <Grid item xs={4} >
+          <Paper className={classes.paper}>
             
-      </Paper>
+          <Card  className={classes.root}>
+      <CardActionArea>
+        <CardMedia
+          className={classes.media}
+          image="/project.jpg"
+          title="Contemplative Reptile"
+        />
+        <CardContent>
+        
+        <Typography gutterBottom variant="h5" component="h2">
+        
+              {card.title}
+           
+            
+          </Typography>
+        
+        
+          
+            </CardContent>
+      </CardActionArea>
+      
+        </Card>
+        </Paper>
+        </Grid>
+         
+      </React.Fragment>
+    );
+  }
+ 
+  console.log(data1);
+  return (
+    <div className={classes.root} >
+                 
+        <Button variant="contained" className={classes.margin} color="//#region" >
+          <Link class="btn btn-primary mr-2"  to="/" >
+              Go To Home
+           </Link>                  
+          </Button>
+           
+           
+          <Grid container spacing={1}>
+        
+        <Grid container item xs={12} spacing={3}>
+            {data1.map(FormRow)}
+         
+        </Grid>
+       
+      </Grid>
+      
       
     </div>
   );
-};
-
-
-
-export default User;
+}

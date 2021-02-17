@@ -14,28 +14,30 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
-const useStyles = makeStyles((theme) => ({
-  root: {
-    
-    
-    width:'100%',
-    
+import {Redirect} from 'react-router-dom'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from "@material-ui/core/CssBaseline";
 
-  },
-  root1: {
+const themeLight = createMuiTheme({
+  palette: {
+    background: {
+      default: "#192d3e"
+    },
     
-    minWidth:100,
-    maxWidth:500,
-    height:'100%',
-    marginBottom:300,
+  }
+});
+
+
+const useStyles = makeStyles((theme) => ({
+  
+  root: {
+    minWidth:300,
     textAlign:'center'
   },
-  
-  paper: {
-    backgroundColor:  '#192d3e',
-    width:'100%',
-    color: theme.palette.text.secondary,
-  },
+  root1:{
+      marginTop:200,
+      marginLeft:200,
+    },
   media: { 
     height:200,
     width:200
@@ -60,104 +62,70 @@ const useStyles = makeStyles((theme) => ({
     
   },
   
-  textField: {
-    width: '25ch',
-  },
- 
     button:{
       backgroundColor:"#192d3e",
       color:"#fff",
-      minWidth:300,
+      minWidth:200,
       marginTop:5,
       marginBottom:5
     },
     button1:{
       backgroundColor:"#61dafb",
-      minWidth:300,
+      minWidth:200,
       marginTop:5,
       marginBottom:5
-    },
-
-    root2:{
-      marginTop:200,
-      marginLeft:200,
     }
 }));
 
 export default function Login() {
-  const classes = useStyles();
- 
-  const [user, setdata] = useState('');
-  const [fetchdata,setFetchdata]=React.useState('');
+  const [light, setLight] = React.useState(true);
+  const token=localStorage.getItem("token");
     
-  
-
-  const [name, setName] = React.useState('');
-  
+  let logedin=true;
+  if(token==null){
+      logedin=false;
+      }
+  const [logdin,setLogdin]=useState(logedin);
+  const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
   
   
- 
-
   
-  
-
 const handleSubmit = (e) => {
   e.preventDefault();
-  
   async function fetchData() {
-      const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:JSON.stringify({name,email,password,confirmPassword}),
-      };
-
-  const response = await fetch('/post', requestOptions);
-   const body = await response.json();
-   
-   setFetchdata(body);
-    }
-    if(password!=confirmPassword){
-      alert("password not match with confirmpassword")
-    }else if(check==false){
-      alert('plese accept term and condition');
-    }else{
-    fetchData().then(() => {
-      alert("User Added Successfully!!!");
-  }).then(()=>{
-    handleClose();
-  }).catch((e)=>{
-     alert(e);
-  });
-}
-  
-}
-console.log(fetchdata);
-  const handleClose = () => {
-    
-    setName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-      
-  };
-
-  const handleChangeName = (event) => {
-      setName(event.target.value);
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify({email,password}),
     };
+  
+  const response = await fetch('/login', requestOptions);
+  const body = await response.json();
+  alert(body.msg);
+  localStorage.setItem("token","cthcghchjvyjfthdtdd");
+  localStorage.setItem("userid",body.userid);
+  localStorage.setItem("username",body.username);
+  setLogdin(body.status);
+  
+  }  
+    
+    fetchData().
+      catch((e)=>{
+     alert("invalid email");
+  }); 
+}
+
+
   const handleChangeEmail = (event) => {
       setEmail(event.target.value);
     };
     const handleChangePassword = (event) => {
       setPassword(event.target.value);
     };
-    const handleChangeConfirmPassword = (event) => {
-      setConfirmPassword(event.target.value);
-    };
     
-
+  
     const [state, setState] = React.useState({
       check:false
     });
@@ -166,18 +134,24 @@ console.log(fetchdata);
       setState({ ...state, [event.target.name]: event.target.checked });
     };
     const { check} = state;
-
-  return (
     
+    if (logdin == true) {
+      
+      return <Redirect  to="/Homepage" />;
+    }
+    
+const abcd=localStorage.getItem("username");
+console.log(abcd);
+  return (
+    <ThemeProvider theme={light?themeLight:'' }>
+    <CssBaseline />
         
-      <Grid container className={classes.root}    >
-      <Paper className={classes.paper}>
+      <Grid container    >
+      
         <Grid container item xs={12} >
         
-        <Grid item xs={9} 
-             >
-                
-                <div className={classes.root2}>
+        <Grid item xs >
+                <div className={classes.root1}>
                  <CardMedia
           className={classes.media}
           image={fuse}
@@ -204,19 +178,15 @@ console.log(fetchdata);
 
     
 
-    <Grid item xs={3}>
+    <Grid item xs={3} xl={2} lg={3} md={4} sm={12}>
     
-      <Card  className={classes.root1}>
+      <Card  className={classes.root}>
       
         <CardContent>
             <Typography gutterBottom variant="h5"className={classes.Typography} component="h1">
                Login User
             </Typography>
               <form  onSubmit={handleSubmit} >
-              
-
-        
-      
         <TextField
         required
         className={classes.margin}
@@ -254,7 +224,8 @@ console.log(fetchdata);
           <Button 
           type="submit"  
           className={classes.button} variant="contained" 
-          
+          disabled={!email} disabled= 
+ {!password}
           >
         Login
       </Button>
@@ -266,15 +237,12 @@ console.log(fetchdata);
         </Typography>
 
         <Button 
-          type="submit"  
           className={classes.button1} variant="contained" 
           >
         Login with Google
       </Button>
       <Button 
-          type="submit"  
           className={classes.button} variant="contained" 
-          
           >
         Login With Facebook
       </Button>
@@ -306,9 +274,9 @@ console.log(fetchdata);
    </Grid>
           
         </Grid>
-        </Paper>
+        
       </Grid>
       
-    
+ </ThemeProvider>   
   );
 }
