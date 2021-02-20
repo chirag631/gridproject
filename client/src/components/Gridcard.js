@@ -32,10 +32,10 @@ export default function Gridcard(props) {
 
   const {name}=props;
   const {id}=props;
-
+const {image}=props;
   
   
-console.log(id);
+console.log(image);
   
   return (
 
@@ -43,7 +43,7 @@ console.log(id);
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image="/abcd.jpg"
+          image={`/users/${image}`}
           title="Contemplative Reptile"
         />
         <CardContent>

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-//const validator=require("validator");
+
 
 const employeeSchema=new mongoose.Schema({
       userid:{
@@ -15,6 +15,12 @@ const employeeSchema=new mongoose.Schema({
         required:true,
         
     },
+    image:{
+        type:String,
+        required:false
+    }
+    
+    
 
 })
 

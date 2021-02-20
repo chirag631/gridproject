@@ -15,7 +15,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from "@material-ui/core/CssBaseline";
-
+import axios from 'axios';
 const themeLight = createMuiTheme({
   palette: {
     background: {
@@ -72,59 +72,45 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Signup() {
-  const [light, setLight] = React.useState(true);
   const classes = useStyles();
- 
-  const [user, setdata] = useState('');
+  const [username, setUserName] = useState('');
   const [fetchdata,setFetchdata]=React.useState('');
-    
-  
-
+  const [filename, setFilename] = useState('');
   const [name, setName] = React.useState('');
-  
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
+  const handleSubmit = (e) => {
   
-  
- 
-
-  
-  
-
-const handleSubmit = (e) => {
   e.preventDefault();
+  const formData = new FormData();
+  formData.append('name',name)
+  formData.append('username',username);
+  formData.append('email',email);
+  formData.append('password', 'password');
+  formData.append('confirmPassword',confirmPassword)
+  formData.append('profileImage', filename);
   
-  async function fetchData() {
-      const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:JSON.stringify({name,email,password,confirmPassword}),
-      };
+  if(password!=confirmPassword){
+    alert("password not match with confirmpassword")
+  }else if(check==false){
+    alert('plese accept term and condition');
+  }else{  
 
-  const response = await fetch('/post', requestOptions);
-   const body = await response.json();
-   
-   setFetchdata(body);
-    }
-    if(password!=confirmPassword){
-      alert("password not match with confirmpassword")
-    }else if(check==false){
-      alert('plese accept term and condition');
-    }else{
-    fetchData().then(() => {
-      alert("User Added Successfully!!!");
-  }).then(()=>{
-    handleClose();
-  }).catch((e)=>{
-     alert(e);
-  });
-}
-  
+axios.post('/post',formData ,).then(res=>{
+  const message=res.data.message;
+  console.log(message)
+} 
+).then(()=>{
+  handleClose();
+})
+.catch(err=>console.log(err));
+
+  }
 }
 console.log(fetchdata);
   const handleClose = () => {
-    
+    alert("User Added Successfully!!!");
     setName('');
     setEmail('');
     setPassword('');
@@ -134,10 +120,12 @@ console.log(fetchdata);
   };
 const uid=localStorage.getItem("uid");
 console.log(uid);
-
-
+const onChange = e => {
+  setFilename(e.target.files[0]);
+  setName(e.target.files[0].name)
+};
   const handleChangeName = (event) => {
-      setName(event.target.value);
+      setUserName(event.target.value);
     };
   const handleChangeEmail = (event) => {
       setEmail(event.target.value);
@@ -160,18 +148,9 @@ console.log(uid);
     const { check} = state;
 
   return (
-    
-    <ThemeProvider theme={light?themeLight:'' }>
-    <CssBaseline />
-    
-    <Grid container  item xs={12}
-   >
-      
-        
-        
-        <Grid  item xs  
+    <Grid container  item xs={12}>
+ <Grid  item xs  
              >
-                
                 <div className={classes.root1} >
                  <CardMedia
           className={classes.media}
@@ -196,9 +175,6 @@ console.log(uid);
       
     </Grid>
 
-
-    
-
     <Grid item xs={3} xl={2} lg={3} md={4} sm={12} >
     
       <Card  className={classes.root}>
@@ -207,16 +183,14 @@ console.log(uid);
             <Typography gutterBottom variant="h5"className={classes.Typography} component="h1">
                Create an account
             </Typography>
-              <form  onSubmit={handleSubmit} >
-              
-
+              <form  onSubmit={handleSubmit} encType="multipart/form-data">
         
       <TextField
           className={classes.margin}
           required
           id="outlined-textarea"
           label="Name"
-          value={name}
+          value={username}
           onChange={handleChangeName}
           fullWidth
           variant="outlined"
@@ -256,7 +230,18 @@ console.log(uid);
           variant="outlined"
         />
       
-      
+      <div>
+      <input
+            type='file'
+            filename="profileImage"
+            className='custom-file-input'
+            id='customFile'
+            onChange={onChange}
+          />
+          <label className='custom-file-label' htmlFor='customFile'>
+            
+          </label>
+          </div>
         <FormGroup >
       
         <FormControlLabel
@@ -288,25 +273,14 @@ console.log(uid);
           <Typography className={classes.Typography2} >
            OR 
         </Typography>
-           
         <Typography className={classes.Typography2} >
           <Link to="/">
              Home
           </Link>
         </Typography>
         </CardContent>
-      
-      
       </Card>
-      
    </Grid>
-          
-        
-       
-      </Grid>
-      
-    
-  </ThemeProvider>
-     
+      </Grid>     
   );
 }

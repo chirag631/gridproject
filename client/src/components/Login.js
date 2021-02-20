@@ -1,6 +1,5 @@
 import React, { useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -15,21 +14,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import {Redirect} from 'react-router-dom'
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
 
-const themeLight = createMuiTheme({
-  palette: {
-    background: {
-      default: "#192d3e"
-    },
-    
-  }
-});
-
-
-const useStyles = makeStyles((theme) => ({
-  
+const useStyles = makeStyles((theme) => ({  
   root: {
     minWidth:300,
     textAlign:'center'
@@ -57,11 +43,8 @@ const useStyles = makeStyles((theme) => ({
   margin: {
     '& > *': {
       margin: theme.spacing(1),
-     
     },
-    
   },
-  
     button:{
       backgroundColor:"#192d3e",
       color:"#fff",
@@ -78,9 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
-  const [light, setLight] = React.useState(true);
   const token=localStorage.getItem("token");
-    
   let logedin=true;
   if(token==null){
       logedin=false;
@@ -89,9 +70,6 @@ export default function Login() {
   const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  
-  
-  
 const handleSubmit = (e) => {
   e.preventDefault();
   async function fetchData() {
@@ -100,7 +78,6 @@ const handleSubmit = (e) => {
         headers: { 'Content-Type': 'application/json' },
         body:JSON.stringify({email,password}),
     };
-  
   const response = await fetch('/login', requestOptions);
   const body = await response.json();
   alert(body.msg);
@@ -116,20 +93,15 @@ const handleSubmit = (e) => {
      alert("invalid email");
   }); 
 }
-
-
   const handleChangeEmail = (event) => {
       setEmail(event.target.value);
     };
     const handleChangePassword = (event) => {
       setPassword(event.target.value);
     };
-    
-  
     const [state, setState] = React.useState({
       check:false
     });
-  
     const handleChange = (event) => {
       setState({ ...state, [event.target.name]: event.target.checked });
     };
@@ -139,13 +111,10 @@ const handleSubmit = (e) => {
       
       return <Redirect  to="/Homepage" />;
     }
-    
 const abcd=localStorage.getItem("username");
 console.log(abcd);
   return (
-    <ThemeProvider theme={light?themeLight:'' }>
-    <CssBaseline />
-        
+  
       <Grid container    >
       
         <Grid container item xs={12} >
@@ -175,13 +144,8 @@ console.log(abcd);
       
     </Grid>
 
-
-    
-
     <Grid item xs={3} xl={2} lg={3} md={4} sm={12}>
-    
       <Card  className={classes.root}>
-      
         <CardContent>
             <Typography gutterBottom variant="h5"className={classes.Typography} component="h1">
                Login User
@@ -269,14 +233,13 @@ console.log(abcd);
         </CardContent>
       
       
-      </Card>
+          </Card>
       
-   </Grid>
+        </Grid>
           
         </Grid>
         
       </Grid>
-      
- </ThemeProvider>   
+ 
   );
 }

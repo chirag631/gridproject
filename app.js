@@ -1,4 +1,34 @@
 var express = require('express');
+const multer =require("multer");
+const storage=multer.diskStorage({
+  destination:function(request,file,callback){
+    callback(null,'./client/public/uploads');
+  },
+  filename:function(request,file,callback){
+    callback(null,file.originalname);
+  }
+})
+
+const upload =multer({
+  storage:storage
+  
+})
+
+const storageUser=multer.diskStorage({
+  destination:function(request,file,callback){
+    callback(null,'./client/public/users');
+  },
+  filename:function(request,file,callback){
+    callback(null,file.originalname);
+  }
+})
+
+const uploadUser =multer({
+  storage:storageUser
+  
+})
+
+
 
 var path = require('path');
 const Register=require("./src/models/registers");
@@ -58,42 +88,77 @@ app.get('/register',async(req,res)=>{
 })
 })
 
-app.post("/post", async(req,res)=>{
-
-    try{
-      
-            
+app.post("/post",uploadUser.single("profileImage"),async(req,res)=>{    
+  var username=req.body.username;
+  var email=req.body.email;
+  var password=req.body.password;
+  console.log(req.body)
             const registerEmployee = new Register({
-                name:req.body.name,
-                email:req.body.email,
-                password:req.body.password,
+                name:username,
+                email:email,
+                password:email,
+                image:req.file.originalname
             });
-            const registered= await registerEmployee.save();
-            
-            res.status(201).send(registered);
-            console.log(registered);
-
-    }catch(e){
-        res.status(400).set(e);
-    }
+            registerEmployee.save().then(doc=>{
+              res.status(201).json({
+                  message:"User Registered Successfully",
+                  results:doc
+              });
+          })
+          .catch(err=>{
+              res.json(err);
+          });
 })
 
-app.post("/postprojectdata", async(req,res)=>{
+app.post("/postprojectdata",upload.single("articalImage"), (req,res)=>{
+  var title=req.body.title;
+  var discription=req.body.discription;
+  var userid=req.body.userid;
+  
+  console.log(req.body)
+  
+  const registerEmployee = new RegisterProject({
+    title:title,
+    discription:discription,
+    userid:userid,
+    image:req.file.originalname
+})
+  registerEmployee.save().then(doc=>{
+    res.status(201).json({
+        message:"User Registered Successfully",
+        results:doc
+    });
+})
+.catch(err=>{
+    res.json(err);
+});
+})
 
-  try{
-          const registerProjectData = new RegisterProject({
-              
-              title:req.body.title,
-              discription:req.body.discription,
-              userid:req.body.userid,
-          });
-          const registered= await registerProjectData.save();
-          
-          res.status(201).send(registered);
-          console.log(registered);
-  }catch(e){
-      res.status(400).set(e);
-  }
+app.post('/uploadimg',upload.single("articalImage"),(req,res)=>{
+  
+  var title=req.body.title;
+  var discription=req.body.discription;
+  var userid=req.body.userid;
+  var name=req.body.name;
+  console.log(discription)
+  
+  const registerEmployee = new RegisterProject({
+    title:title,
+    discription:discription,
+    userid:userid,
+    image:name
+})
+  registerEmployee.save().then(doc=>{
+    res.status(201).json({
+        message:"User Registered Successfully",
+        results:doc
+    });
+})
+.catch(err=>{
+    res.json(err);
+});
+ 
+
 })
 
 app.post('/getprojectdata',async(req,res)=>{

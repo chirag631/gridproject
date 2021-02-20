@@ -29,16 +29,11 @@ const useStyles = makeStyles((theme) => ({
   margin:{
     marginBottom:theme.spacing(2)
   },
-  
-  
 }));
-
 export default function Users(props) {
   const classes = useStyles();
   const [data1,setdata]=useState([]);
   const {name}=useParams();
- 
- 
   console.log(props)
 
   useEffect(() => {
@@ -68,7 +63,7 @@ export default function Users(props) {
       <CardActionArea>
         <CardMedia
           className={classes.media}
-          image="/project.jpg"
+          image={`/uploads/${card.image}`}
           title="Contemplative Reptile"
         />
         <CardContent>
@@ -76,15 +71,9 @@ export default function Users(props) {
         <Typography gutterBottom variant="h5" component="h2">
         
               {card.title}
-           
-            
           </Typography>
-        
-        
-          
-            </CardContent>
+           </CardContent>
       </CardActionArea>
-      
         </Card>
         </Paper>
         </Grid>
@@ -102,18 +91,11 @@ export default function Users(props) {
               Go To Home
            </Link>                  
           </Button>
-           
-           
           <Grid container spacing={1}>
-        
         <Grid container item xs={12} spacing={3}>
             {data1.map(FormRow)}
-         
         </Grid>
-       
       </Grid>
-      
-      
     </div>
   );
 }
