@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width:'99%',
+    justify:'center',
     textAlign:'center',
     marginTop:5
 
@@ -56,7 +56,7 @@ export default function Users(props) {
       
       <React.Fragment>
         
-          <Grid item xs={4} >
+          <Grid item xl={2} lg={3} md={4} xs={12} sm={6} spacing={3} >
           <Paper className={classes.paper}>
             
           <Card  className={classes.root}>
@@ -91,8 +91,8 @@ export default function Users(props) {
               Go To Home
            </Link>                  
           </Button>
-          <Grid container spacing={1}>
-        <Grid container item xs={12} spacing={3}>
+          <Grid container justify="center">
+        <Grid container item xs={12} spacing={4} justify="center">
             {data1.map(FormRow)}
         </Grid>
       </Grid>

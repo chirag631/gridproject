@@ -13,18 +13,7 @@ import { TextField } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import CssBaseline from "@material-ui/core/CssBaseline";
 import axios from 'axios';
-const themeLight = createMuiTheme({
-  palette: {
-    background: {
-      default: "#192d3e"
-    }
-  }
-});
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -148,8 +137,9 @@ const onChange = e => {
     const { check} = state;
 
   return (
-    <Grid container  item xs={12}>
- <Grid  item xs  
+    <Grid container   justify="center" >
+    <Grid container  item xs={12} justify="center">
+        <Grid  item xs  
              >
                 <div className={classes.root1} >
                  <CardMedia
@@ -175,7 +165,7 @@ const onChange = e => {
       
     </Grid>
 
-    <Grid item xs={3} xl={2} lg={3} md={4} sm={12} >
+    <Grid item xs={10} xl={2} lg={3} md={9}  sm={10}>
     
       <Card  className={classes.root}>
       
@@ -230,8 +220,8 @@ const onChange = e => {
           variant="outlined"
         />
       
-      <div>
-      <input
+      <div className={classes.Typography2}>
+      <input 
             type='file'
             filename="profileImage"
             className='custom-file-input'
@@ -282,5 +272,7 @@ const onChange = e => {
       </Card>
    </Grid>
       </Grid>     
+      </Grid>
+      
   );
 }

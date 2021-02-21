@@ -13,7 +13,7 @@ import axios from 'axios';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop:20,
-    padding:20,
+    
     textAlign:'center',
   },
   Typography:{
@@ -59,7 +59,7 @@ const onChange = e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('articalImage',filename)
-    formData.append('title', 'fcfcf');
+    formData.append('title', title);
     formData.append('discription',discription)
     formData.append('userid', userid);
     formData.append('name',name)
@@ -100,12 +100,12 @@ const onChange = e => {
      </Link>                  
     </Button>
 
-    <Grid container  direction="row" 
-    justify="center" alignItems="flex-end"
+    <Grid container  
+    justify="center" 
       className={classes.root}>
-      <Grid item  xs={4}  md={3} sm={5}>
-      <Grid container  >
-      <Card spacing={1} >
+      <Grid item justify='center' xl={2} lg={4} xs={10} md={6} sm={8}>
+      
+      <Card  >
       
       <CardContent>
           <Typography gutterBottom variant="h5"className={classes.Typography} component="h1">
@@ -155,11 +155,9 @@ const onChange = e => {
     </form>
       </CardContent>
       </Card>
+      
       </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        
-      </Grid>
+      
     </Grid>
     </div>
     

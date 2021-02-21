@@ -12,11 +12,13 @@ import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles({
   root: {
+    minHeight:520
     
   },
   
   media: {
-    height:250
+    minHeight:400,
+    minWwidth:250
   },
   button:{
     backgroundColor:"#192d3e",

@@ -17,6 +17,7 @@ import {Redirect} from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({  
   root: {
+    
     minWidth:300,
     textAlign:'center'
   },
@@ -115,9 +116,9 @@ const abcd=localStorage.getItem("username");
 console.log(abcd);
   return (
   
-      <Grid container    >
+      <Grid container   justify="center" >
       
-        <Grid container item xs={12} >
+        <Grid container item xs={12} justify="center">
         
         <Grid item xs >
                 <div className={classes.root1}>
@@ -144,8 +145,8 @@ console.log(abcd);
       
     </Grid>
 
-    <Grid item xs={3} xl={2} lg={3} md={4} sm={12}>
-      <Card  className={classes.root}>
+    <Grid item xs={10} xl={2} lg={3} md={9} sm={10} >
+      <Card  className={classes.root} >
         <CardContent>
             <Typography gutterBottom variant="h5"className={classes.Typography} component="h1">
                Login User
