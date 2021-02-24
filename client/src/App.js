@@ -5,6 +5,7 @@ import Signup from './components/Signup'
 import Homepage from './components/Homepage'
 import Logout from './components/Logout'
 import Addproject from "./components/Addproject"
+import Updateprofile from './components/Updateprofile'
 import {
   BrowserRouter as Router,
   Route,
@@ -37,6 +38,7 @@ function App() {
         <Route  path="/Signup"  component={Signup} />
         <Route path="/Homepage" component={Homepage} />
         <Route path="/Addproject" component={Addproject}/>
+        <Route path="/Updateprofile" component={Updateprofile}/>
         <Route  path="/:name"    component={Users} />
       </Switch>
     </div>

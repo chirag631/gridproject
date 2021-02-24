@@ -9,7 +9,17 @@ import { Link} from "react-router-dom";
 import { TextField } from '@material-ui/core';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#192d3e',
+      contrastText: '#fff',
+    },
+    
+  },
+});
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop:20,
@@ -57,23 +67,32 @@ const onChange = e => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append('articalImage',filename)
     formData.append('title', title);
     formData.append('discription',discription)
     formData.append('userid', userid);
     formData.append('name',name)
-    console.log(title);
-
-    axios.post('/postprojectdata',formData     
+    console.log(formData);
+    
+    axios.post("/postprojectdata",formData,{headers: {
+      "content-type": 'multipart/form-data',
+    },},
   ).then(res=>{
+    const status=res.data.status;
+    if(status=='true'){
+      handleClose();
+    }
     const message=res.data.message;
+    alert(message);
     console.log(message)
   } 
-  ).then(()=>{
-    handleClose();
-  })
-  .catch(err=>console.log(err));
+  )
+  .catch((err)=>{
+    alert(err)
+    console.log(err)
+  });
  
   }
   console.log(fetchdata);
@@ -84,7 +103,6 @@ const onChange = e => {
         setDiscription(event.target.value);
       };
       const handleClose = () =>{
-        alert("Project Added successfully")
           setDiscription('');
           setTitle('');
           setFilename('');
@@ -92,6 +110,8 @@ const onChange = e => {
       if(logdin===false){
         return <Redirect to="/login"/>;
     }
+
+    
   return (
       <div className={classes.root}>   
     <Button variant="contained" className={classes.margin}  >
@@ -109,50 +129,54 @@ const onChange = e => {
       
       <CardContent>
           <Typography gutterBottom variant="h5"className={classes.Typography} component="h1">
-             Addproject
+             Add Project
           </Typography>
-            <form  onSubmit={handleSubmit} encType="multipart/form-data">
-      <TextField
-      required
-      className={classes.margin}
-        id="outlined-textarea"
-        label="Project Title"
-        value={title}
-        onChange={handleChangeTitle}
-        fullWidth
-        variant="outlined"
-      />
-      <TextField
-      className={classes.margin}
-      required
-        id="outlined-textarea"
-        label="Discription"
-        value={discription}
-        onChange={handleChangeDiscription}
-        fullWidth
-        variant="outlined"
-      />
-      <div>
-      
-      <input
-            type='file'
-            filename="articalImage"
-            className='custom-file-input'
-            id='customFile'
-            onChange={onChange}
-          />
-          <label className='custom-file-label' htmlFor='customFile'>
-          </label>
-          </div>
-        <Button 
-        type="submit"  
-        className={classes.button} variant="contained" 
-        disabled={!title} disabled={!discription} 
-        >
-      Submit
-    </Button>
-    
-    </form>
+            <form  onSubmit={handleSubmit} >
+              
+              <TextField
+              required
+              className={classes.margin}
+                id="outlined-textarea"
+                label="Project Title"
+                value={title}
+                onChange={handleChangeTitle}
+                fullWidth
+                variant="outlined"
+              />
+              <TextField
+              className={classes.margin}
+              required
+                id="outlined-textarea"
+                label="Discription"
+                value={discription}
+                onChange={handleChangeDiscription}
+                fullWidth
+                variant="outlined"
+              />
+            
+            
+                    
+              <TextField
+              id="outlined-required"
+              helperText="Project Image*"
+              className={classes.margin}
+              required
+              type="file"
+              fullWidth
+              filename="articalImage"
+              onChange={onChange}
+              variant="outlined"
+              />
+              <ThemeProvider theme={theme}>
+                <Button 
+                type="submit" color="primary"  
+                className={classes.button} variant="contained" 
+                disabled={!title} disabled={!discription} disabled={!filename}
+                >
+              Submit
+            </Button>
+            </ThemeProvider>
+          </form>
       </CardContent>
       </Card>
       

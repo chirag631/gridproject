@@ -14,7 +14,21 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import {Redirect} from 'react-router-dom'
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#192d3e',
+      contrastText: '#fff',
+    },
+    secondary:{
+      main: '#61dafb',
+      contrastText: '#000',
+    }
+    
+  },
+});
 const useStyles = makeStyles((theme) => ({  
   root: {
     
@@ -47,18 +61,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
     button:{
-      backgroundColor:"#192d3e",
-      color:"#fff",
       minWidth:200,
       marginTop:5,
       marginBottom:5
     },
-    button1:{
-      backgroundColor:"#61dafb",
-      minWidth:200,
-      marginTop:5,
-      marginBottom:5
-    }
+    
 }));
 
 export default function Login() {
@@ -71,6 +78,8 @@ export default function Login() {
   const classes = useStyles();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+
 const handleSubmit = (e) => {
   e.preventDefault();
   async function fetchData() {
@@ -100,13 +109,8 @@ const handleSubmit = (e) => {
     const handleChangePassword = (event) => {
       setPassword(event.target.value);
     };
-    const [state, setState] = React.useState({
-      check:false
-    });
-    const handleChange = (event) => {
-      setState({ ...state, [event.target.name]: event.target.checked });
-    };
-    const { check} = state;
+    
+    
     
     if (logdin == true) {
       
@@ -157,7 +161,7 @@ console.log(abcd);
         className={classes.margin}
           id="outlined-textarea"
           label="Email"
-          
+          type="email"
           value={email}
           onChange={handleChangeEmail}
           fullWidth
@@ -168,7 +172,7 @@ console.log(abcd);
         required
           id="outlined-textarea"
           label="Password"
-         
+          type="password"
           value={password}
           onChange={handleChangePassword}
           fullWidth
@@ -177,46 +181,41 @@ console.log(abcd);
         
       
       
-        <FormGroup >
-      
-        <FormControlLabel
-            
-            control={<Checkbox checked={check}  color='primary' onChange={handleChange} name="check" />}
-            label="Remember Me"
-          />
-      </FormGroup>
-    
+      <ThemeProvider theme={theme}>
           <Button 
-          type="submit"  
+          type="submit"  color="primary"
           className={classes.button} variant="contained" 
           disabled={!email} disabled= 
  {!password}
           >
         Login
       </Button>
-      
+      </ThemeProvider>
       </form>
 
       <Typography className={classes.Typography2} >
       <Divider /> OR<Divider />
         </Typography>
-
-        <Button 
-          className={classes.button1} variant="contained" 
+        <ThemeProvider theme={theme}>
+          <div>
+        <Button color="secondary"
+          className={classes.button} variant="contained" 
           >
         Login with Google
-      </Button>
-      <Button 
+      </Button></div>
+      <div>
+      <Button color="primary"
           className={classes.button} variant="contained" 
           >
         Login With Facebook
       </Button>
-    
+      </div>
+      </ThemeProvider>
       <Typography className={classes.Typography2} >
       Create an account?
         </Typography>
     
-          
+        
       <Typography className={classes.Typography2} >
           <Link to="/Signup">
             Signup

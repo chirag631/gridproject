@@ -1,45 +1,13 @@
 var express = require('express');
-const multer =require("multer");
-const storage=multer.diskStorage({
-  destination:function(request,file,callback){
-    callback(null,'./client/public/uploads');
-  },
-  filename:function(request,file,callback){
-    callback(null,file.originalname);
-  }
-})
-
-const upload =multer({
-  storage:storage
-  
-})
-
-const storageUser=multer.diskStorage({
-  destination:function(request,file,callback){
-    callback(null,'./client/public/users');
-  },
-  filename:function(request,file,callback){
-    callback(null,file.originalname);
-  }
-})
-
-const uploadUser =multer({
-  storage:storageUser
-  
-})
-
-
-
+var fileUpload=require('express-fileupload')
 var path = require('path');
 const Register=require("./src/models/registers");
 const RegisterProject=require("./src/models/studentdetails");
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const PORT  = process.env.PORT || 5000;
-
 var app = express();
 const bodyParser=require('body-parser');
-
 const static_path=path.join(__dirname,"./client/build/index");
 const uri='mongodb://localhost:27017/abcde'
 const MONGODB_URI='mongodb+srv://chirag:Chirag@7321@cluster0.sbwl0.mongodb.net/chirag?retryWrites=true&w=majority';
@@ -55,7 +23,7 @@ mongoose.connection.on('connected', () => {
 
 var cors=require('cors');
 
-
+app.use(fileUpload());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: false }));
 
@@ -71,9 +39,7 @@ app.use((req,res,next)=>{
   next();
 });
 
-
 app.get('/register',async(req,res)=>{
-    
   Register.find()
   .then(result=>{
     res.status(200).json({
@@ -88,16 +54,25 @@ app.get('/register',async(req,res)=>{
 })
 })
 
-app.post("/post",uploadUser.single("profileImage"),async(req,res)=>{    
+app.post("/post",async(req,res)=>{    
   var username=req.body.username;
   var email=req.body.email;
   var password=req.body.password;
-  console.log(req.body)
+console.log(email)
+  let user = await Register.findOne({ email });
+  if (user){ 
+    res.status(400).json({
+    message:"Email already Registered",
+   
+});
+}else{
+
+  console.log(username)
             const registerEmployee = new Register({
                 name:username,
                 email:email,
-                password:email,
-                image:req.file.originalname
+                password:password,
+                image:'defaultprofile.png'
             });
             registerEmployee.save().then(doc=>{
               res.status(201).json({
@@ -108,23 +83,146 @@ app.post("/post",uploadUser.single("profileImage"),async(req,res)=>{
           .catch(err=>{
               res.json(err);
           });
+        }
 })
 
-app.post("/postprojectdata",upload.single("articalImage"), (req,res)=>{
-  var title=req.body.title;
-  var discription=req.body.discription;
-  var userid=req.body.userid;
+app.get('/getuser/:userid',async(req,res)=>{
+  const {userid}=req.params
+  console.log(userid) 
+  Register.find({_id:userid})
+  .then(result=>{
+    res.status(200).json({
+      studentData:result
+    })
+  })
+.catch(err=>{
+  console.log(err);
+  res.status(500).json({
+    error:err
+  })
+})
+})
+
+app.post("/updateprofile", function(req,res,next){
   
-  console.log(req.body)
+  if(!req.files )
+  {
+    var username=req.body.username;
+    var email=req.body.email;
+    var password=req.body.password;
+    var _id=req.body.userid;
+       
+    
+    Register.findById(_id,function(err,data){
+    if (!data){
+      res.status(404).send("data is not found");
+    }else{
+      
+      data.name=username,
+    data.email=email,
+    data.password=password,
+    
   
+    data.save().
+      then(doc=>{
+   return res.status(201).json({
+        message:"User Registered Successfully",
+        results:doc
+    });
+    })
+    .catch(err=>{
+    return res.json(err);
+    });
+    }
+    
+  })
+  }
+  else{
+  if(req.files.articalImage.mimetype!='image/jpg'&&req.files.articalImage.mimetype!='image/jpeg'&&req.files.articalImage.mimetype!='image/png'){
+    res.json({message:"Please upload image file"});
+  }
+else{
+  
+  var file=req.files.articalImage
+      var username=req.body.username;
+      var email=req.body.email;
+      var password=req.body.password;
+      var _id=req.body.userid;
+      var name=file.name    
+      
+      Register.findById(_id,function(err,data){
+      if (!data){
+        res.status(404).send("data is not found");
+      }else{
+        
+        data.name=username,
+      data.email=email,
+      data.password=password,
+      data.image=name
+    
+      data.save().then(()=>{
+        file = req.files.articalImage;
+        uploadPath = __dirname + '/client/public/users/' + name;
+
+      // Use the mv() method to place the file somewhere on your server
+        file.mv(uploadPath, function(err) {
+        if (err){
+         }
+      });
+      }).
+        then(doc=>{
+      res.status(201).json({
+          message:"User Registered Successfully",
+          results:doc
+      });
+      })
+      .catch(err=>{
+      res.json(err);
+      });
+      }
+      
+    })
+    
+  }
+}
+})
+
+app.post("/postprojectdata", function(req,res,next){
+  file = req.files.articalImage;
+  if(!req.files )
+  {
+    res.json({
+      status:'false',
+      message:"file is empty"});
+  }
+  if(file.mimetype!='image/jpg'&&file.mimetype!='image/jpeg'&&file.mimetype!='image/png'){
+    res.json({
+      status:'false',
+      message:"Please upload image file"});
+  }
+else{
+  file = req.files.articalImage;
+  uploadPath = __dirname + '/client/public/uploads/' + file.name;
+
+  // Use the mv() method to place the file somewhere on your server
+  file.mv(uploadPath, function(err) {
+    if (err)
+       res.status(500).send(err);
+  });
+
+    var title=req.body.title;
+    var discription=req.body.discription;
+    var userid=req.body.userid;
+    var name=file.name    
   const registerEmployee = new RegisterProject({
     title:title,
     discription:discription,
     userid:userid,
-    image:req.file.originalname
+    image:name
 })
   registerEmployee.save().then(doc=>{
     res.status(201).json({
+      status:'true',
         message:"User Registered Successfully",
         results:doc
     });
@@ -132,9 +230,13 @@ app.post("/postprojectdata",upload.single("articalImage"), (req,res)=>{
 .catch(err=>{
     res.json(err);
 });
+}
+
 })
 
-app.post('/uploadimg',upload.single("articalImage"),(req,res)=>{
+
+
+app.post('/uploadimg',(req,res)=>{
   
   var title=req.body.title;
   var discription=req.body.discription;

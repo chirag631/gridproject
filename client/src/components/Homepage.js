@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme) => ({
                        Add Project
                     </Link>                  
                    </Button>
+                   <Button variant="contained" className={classes.margin}  >
+                   <Link   to={{pathname:"/Updateprofile"}} >
+                       Update Profile
+                    </Link>                  
+                   </Button>
                  <h1>
                     Welcome {username}
                   </h1>

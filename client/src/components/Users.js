@@ -14,8 +14,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     justify:'center',
     textAlign:'center',
-    marginTop:5
-
+    marginTop:5,
+    
+  },
+  root1:{
+    minHeight:350
   },
   media: {
     height:250
@@ -59,7 +62,7 @@ export default function Users(props) {
           <Grid item xl={2} lg={3} md={4} xs={12} sm={6} spacing={3} >
           <Paper className={classes.paper}>
             
-          <Card  className={classes.root}>
+          <Card  className={classes.root1}>
       <CardActionArea>
         <CardMedia
           className={classes.media}
@@ -92,7 +95,7 @@ export default function Users(props) {
            </Link>                  
           </Button>
           <Grid container justify="center">
-        <Grid container item xs={12} spacing={4} justify="center">
+        <Grid container item xs={12} spacing={4} justify="flex-start">
             {data1.map(FormRow)}
         </Grid>
       </Grid>

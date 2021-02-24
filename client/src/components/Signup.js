@@ -14,7 +14,17 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#192d3e',
+      contrastText: '#fff',
+    },
+    
+  },
+});
 const useStyles = makeStyles((theme) => ({
   root: {
     
@@ -48,9 +58,7 @@ const useStyles = makeStyles((theme) => ({
     },
     
   },
-  button:{
-    backgroundColor:"#192d3e",
-    color:"#fff",
+  button:{ 
     minWidth:200,
     marginTop:5,
     marginBottom:5
@@ -69,37 +77,42 @@ export default function Signup() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [state, setState] = React.useState({
+    check:false
+  });
   const handleSubmit = (e) => {
   
   e.preventDefault();
-  const formData = new FormData();
-  formData.append('name',name)
-  formData.append('username',username);
-  formData.append('email',email);
-  formData.append('password', 'password');
-  formData.append('confirmPassword',confirmPassword)
-  formData.append('profileImage', filename);
   
+  async function fetchData() {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:JSON.stringify({username,email,password,confirmPassword}),
+    };
+
+const response = await fetch('/post', requestOptions);
+ const body = await response.json();
+ alert(body.message);
+ setFetchdata(body.message);
+  }
   if(password!=confirmPassword){
     alert("password not match with confirmpassword")
   }else if(check==false){
     alert('plese accept term and condition');
-  }else{  
-
-axios.post('/post',formData ,).then(res=>{
-  const message=res.data.message;
-  console.log(message)
-} 
-).then(()=>{
+  }else{
+  fetchData().then(()=>{
   handleClose();
-})
-.catch(err=>console.log(err));
-
-  }
+}).catch((e)=>{
+   alert(e);
+});
+}
+  
 }
 console.log(fetchdata);
   const handleClose = () => {
-    alert("User Added Successfully!!!");
+    
+    setUserName('');
     setName('');
     setEmail('');
     setPassword('');
@@ -107,12 +120,11 @@ console.log(fetchdata);
     setState(false)
       
   };
-const uid=localStorage.getItem("uid");
-console.log(uid);
-const onChange = e => {
-  setFilename(e.target.files[0]);
-  setName(e.target.files[0].name)
-};
+
+console.log(username)
+console.log(email)
+console.log(password)
+console.log(confirmPassword)
   const handleChangeName = (event) => {
       setUserName(event.target.value);
     };
@@ -125,11 +137,6 @@ const onChange = e => {
     const handleChangeConfirmPassword = (event) => {
       setConfirmPassword(event.target.value);
     };
-    
-
-    const [state, setState] = React.useState({
-      check:false
-    });
   
     const handleChange = (event) => {
       setState({ ...state, [event.target.name]: event.target.checked });
@@ -137,6 +144,7 @@ const onChange = e => {
     const { check} = state;
 
   return (
+    
     <Grid container   justify="center" >
     <Grid container  item xs={12} justify="center">
         <Grid  item xs  
@@ -165,7 +173,7 @@ const onChange = e => {
       
     </Grid>
 
-    <Grid item xs={10} xl={2} lg={3} md={9}  sm={10}>
+    <Grid item xs={12} xl={2} lg={3} md={9}  sm={10}>
     
       <Card  className={classes.root}>
       
@@ -190,7 +198,7 @@ const onChange = e => {
         className={classes.margin}
           id="outlined-textarea"
           label="Email"
-          
+          type="email"
           value={email}
           onChange={handleChangeEmail}
           fullWidth
@@ -201,7 +209,8 @@ const onChange = e => {
         required
           id="outlined-textarea"
           label="Password"
-         
+          name="password"
+          type="password"
           value={password}
           onChange={handleChangePassword}
           fullWidth
@@ -212,6 +221,7 @@ const onChange = e => {
         className={classes.margin}
           id="outlined-textarea"
           label="Confirm Password"
+          type="password"
           name="confirmPassword"
           value={confirmPassword}
           onChange={handleChangeConfirmPassword}
@@ -220,29 +230,18 @@ const onChange = e => {
           variant="outlined"
         />
       
-      <div className={classes.Typography2}>
-      <input 
-            type='file'
-            filename="profileImage"
-            className='custom-file-input'
-            id='customFile'
-            onChange={onChange}
-          />
-          <label className='custom-file-label' htmlFor='customFile'>
-            
-          </label>
-          </div>
+      
         <FormGroup >
       
         <FormControlLabel
-            
             control={<Checkbox checked={check}  color='primary' onChange={handleChange} name="check" />}
-            label="I read and accept terms and conditions"
+            label={<Typography variant="caption" color="textSecondary">I read and accept terms and conditions</Typography>}
           />
       </FormGroup>
+      <ThemeProvider theme={theme}>
     
           <Button 
-          type="submit"  
+          type="submit"  color="primary"
           className={classes.button} variant="contained" 
           disabled={!name} disabled= {!email}
           disabled={!password} disabled= {!confirmPassword} 
@@ -250,7 +249,7 @@ const onChange = e => {
           >
         Create an account
       </Button>
-      
+      </ThemeProvider>
       </form>
     
     Already have an account?

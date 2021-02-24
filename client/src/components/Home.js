@@ -67,7 +67,7 @@ export default function Home(props) {
            </Link>                  
           </Button>
         <Grid container justify="center" >
-        <Grid container item xs={12}   spacing={4} justify="center"  >
+        <Grid container item xs={12}   spacing={4} justify="flex-start"  >
             {(data1).map(FormRow)}  
         </Grid>
       </Grid>
