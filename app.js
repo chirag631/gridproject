@@ -202,7 +202,7 @@ app.post("/postprojectdata", function(req,res,next){
   }
 else{
   file = req.files.articalImage;
-  uploadPath = __dirname + '/client/public/uploads/' + file.name;
+  uploadPath = __dirname + '/temp/uploads/' + file.name;
 
   // Use the mv() method to place the file somewhere on your server
   file.mv(uploadPath, function(err) {
