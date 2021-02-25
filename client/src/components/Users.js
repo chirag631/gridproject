@@ -9,6 +9,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -66,6 +67,7 @@ export default function Users(props) {
       <CardActionArea>
         <CardMedia
           className={classes.media}
+          
           image={`/uploads/${card.image}`}
           title="Contemplative Reptile"
         />
