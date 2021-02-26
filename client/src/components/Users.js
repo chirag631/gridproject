@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height:250
   },
+  Typography:{
+    color:"#fa7068"
+  },
  
   margin:{
     marginBottom:theme.spacing(2)
@@ -88,7 +91,7 @@ export default function Users(props) {
     <div>
     <Navbar />
     <div className={classes.root} >
-                 
+    <Typography className={classes.Typography}  variant="h4"  gutterBottom >PROJECT</Typography>  
           <Grid container justify="center">
         <Grid container item xs={12} spacing={4} justify="flex-start">
             {data1.map(FormRow)}
