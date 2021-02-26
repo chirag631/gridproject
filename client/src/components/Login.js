@@ -15,7 +15,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import {Redirect} from 'react-router-dom'
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
+import Navbar from './Navbar';
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -31,7 +31,6 @@ const theme = createMuiTheme({
 });
 const useStyles = makeStyles((theme) => ({  
   root: {
-    
     minWidth:300,
     textAlign:'center'
   },
@@ -119,7 +118,8 @@ const handleSubmit = (e) => {
 const abcd=localStorage.getItem("username");
 console.log(abcd);
   return (
-  
+    <div>
+    <Navbar />
       <Grid container   justify="center" >
       
         <Grid container item xs={12} justify="center">
@@ -240,6 +240,7 @@ console.log(abcd);
         </Grid>
         
       </Grid>
+      </div>
  
   );
 }

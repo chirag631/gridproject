@@ -7,7 +7,7 @@ import Logout from './components/Logout'
 import Addproject from "./components/Addproject"
 import Updateprofile from './components/Updateprofile'
 import Viewproject from './components/Viewproject';
-
+import Navbar from './components/Navbar'
 
 import {
   BrowserRouter as Router,
@@ -26,29 +26,33 @@ const themeLight = createMuiTheme({
   }
 });
 
-function App() {
+function Admin() {
   
   return (
     <ThemeProvider theme={themeLight}>
     <CssBaseline />
-<div >  
+<div >
+    
     <Router >
+     
+      <Navbar />
+      
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/login"  component={Login} />        
-        <Route path="/Homepage" component={Homepage} />
-        <Route path="/logout"  component={Logout} />
-        <Route path="/Signup"  component={Signup} />
-        <Route path="/Homepage" component={Homepage} />
-        <Route path="/Addproject" component={Addproject}/>
-        <Route path="/Updateprofile" component={Updateprofile}/>
-        <Route path="/Viewproject" component={Viewproject}/>
-        <Route path="/:name" component={Users} />
+        <Route  path="/Signup"  component={Signup} />
+        
+        
+     
+        <Route  path="/:name"    component={Users} />
+
       </Switch>
+    
+
   </Router>
   </div>
    </ThemeProvider>
   );
 }
 
-export default App;
+export default Admin;

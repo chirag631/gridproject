@@ -202,7 +202,7 @@ app.post("/postprojectdata", function(req,res,next){
   }
 else{
   file = req.files.articalImage;
-  uploadPath = __dirname + '/temp/uploads/' + file.name;
+  uploadPath = __dirname + '/client/public/uploads/' + file.name;
 
   // Use the mv() method to place the file somewhere on your server
   file.mv(uploadPath, function(err) {
@@ -234,7 +234,22 @@ else{
 
 })
 
-
+app.post('/viewprojectdata',async(req,res)=>{
+  const userid=req.body.userid;
+  
+RegisterProject.find({userid:userid})
+.then(result=>{
+  res.status(200).json({
+    studentData:result
+  })
+})
+.catch(err=>{
+console.log(err);
+res.status(500).json({
+  error:err
+})
+})
+})
 
 app.post('/uploadimg',(req,res)=>{
   
@@ -265,6 +280,7 @@ app.post('/uploadimg',(req,res)=>{
 
 app.post('/getprojectdata',async(req,res)=>{
     const name=req.body.name;
+    try{
     const username=await Register.findOne({name:name});
     
     const userid=username._id;
@@ -282,7 +298,12 @@ app.post('/getprojectdata',async(req,res)=>{
     error:err
   })
 })
+    }catch(e){
+
+    }
 })
+
+
 
 app.post("/login", async(req,res)=>{
 

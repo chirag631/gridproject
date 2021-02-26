@@ -13,8 +13,8 @@ import { TextField } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import axios from 'axios';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Navbar from './Navbar';
 
 const theme = createMuiTheme({
   palette: {
@@ -27,7 +27,6 @@ const theme = createMuiTheme({
 });
 const useStyles = makeStyles((theme) => ({
   root: {
-    
     minWidth:300,
     textAlign:'center'
   },
@@ -61,7 +60,8 @@ const useStyles = makeStyles((theme) => ({
   button:{ 
     minWidth:200,
     marginTop:5,
-    marginBottom:5
+    marginBottom:5,
+    
   },
     
 }));
@@ -144,6 +144,8 @@ console.log(confirmPassword)
     const { check} = state;
 
   return (
+    <div>
+    <Navbar />
     
     <Grid container   justify="center" >
     <Grid container  item xs={12} justify="center">
@@ -272,6 +274,6 @@ console.log(confirmPassword)
    </Grid>
       </Grid>     
       </Grid>
-      
+      </div>
   );
 }

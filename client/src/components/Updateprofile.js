@@ -11,7 +11,8 @@ import { TextField } from '@material-ui/core';
 import {Redirect} from 'react-router-dom'
 import axios from 'axios';
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
+import Navbaruser from './Navbaruser';
+import Sidebar from './Sidebar';
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -30,10 +31,7 @@ const useStyles = makeStyles((theme) => ({
   
   media: { 
     borderRadius: '5%',
-      height:400,
-      
-      
-      
+      height:350,
   }, 
   Typography:{
     marginTop:50,
@@ -133,16 +131,22 @@ const handleChangeEmail = (event) => {
         return <Redirect to="/login"/>;
     }
   return (
+    <div>
+        <Navbaruser />
       <div className={classes.root}>   
-    <Button variant="contained" className={classes.margin}  >
-    <Link   to={{pathname:"/Homepage"}} >
-        Go To Homepage
-     </Link>                  
-    </Button>
+      <Grid container color="primary" justify="center" direction="row">
+      <Grid xs={12} container Items justify="flex-start" >
+        <Grid xs={5} sm={4} md={3} lg={2} xl={2} Items>
+          <Sidebar />
+                
+                   </Grid> 
+                   <Grid xs Items>
+    
+    
 
     <Grid container  
     justify="center" 
-      className={classes.root}>
+     >
       <Grid item justify='center'  xl={3} lg={4} xs={10} md={6} sm={8}>
       
       <Card  >
@@ -220,7 +224,10 @@ const handleChangeEmail = (event) => {
       </Grid>
       
     </Grid>
+    </Grid>
+    </Grid>
+    </Grid>
     </div>
-    
+    </div>
   );
 }
